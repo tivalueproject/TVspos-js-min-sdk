@@ -18,7 +18,7 @@ $ git clone https://github.com/virtualeconomy/js-v-min-sdk.git
   $ npm install
 ```
 
-  4. build project and then you can use JS library for V Systems and Ledger Wallet
+  4. build project and then you can use JS library for V Systems
 
 ```bash
   $ npm run build
@@ -101,20 +101,28 @@ $ git clone https://github.com/virtualeconomy/js-v-min-sdk.git
     sendLeasingTx(chain, dataInfo);
     ```
 
-## Test
+## Sample Code and Testing
 
-Run these commands as you want (you may need to change some parameters in test file).
+Sample code please refer these files:
 
 ```
-# Test payment with ledger wallet
-# Change SEED and RECIPIENT in "test/test-payment.js" for your test case
+test/test-payment.js
+test/test-lease.js
+test/test-cancellease.js
+```
+
+Run these commands to test (you may need to change some parameters(like SEED, RECIPIENT_ADDR and LEASE_TX_ID) in test file before run).
+
+```
+# Test payment
+# Change SEED and RECIPIENT_ADDR in "test/test-payment.js" for your test case
 $ npm run payment
 
-# Test leasing with ledger wallet
-# Change SEED and RECIPIENT in "test/test-lease.js" for your test case
+# Test leasing
+# Change SEED and RECIPIENT_ADDR in "test/test-lease.js" for your test case
 $ npm run lease
 
-# Test cancel leasing with ledger wallet
+# Test cancel leasing
 # Change SEED and LEASE_TX_ID in "test/test-cancellease.js" for your test case
 $ npm run cancel
 ```
