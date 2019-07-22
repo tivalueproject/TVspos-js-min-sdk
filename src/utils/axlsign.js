@@ -16,7 +16,7 @@
 // Implementation derived from TweetNaCl version 20140427.
 // See for details: http://tweetnacl.cr.yp.to/
 var axlsign = Object.create(null);
-var gf = function (init) {
+var gf = function(init) {
     var i, r = new Float64Array(16);
     if (init)
         for (i = 0; i < init.length; i++)
@@ -26,7 +26,15 @@ var gf = function (init) {
 var _0 = new Uint8Array(16);
 var _9 = new Uint8Array(32);
 _9[0] = 9;
-var gf0 = gf(), gf1 = gf([1]), _121665 = gf([0xdb41, 1]), D = gf([0x78a3, 0x1359, 0x4dca, 0x75eb, 0xd8ab, 0x4141, 0x0a4d, 0x0070, 0xe898, 0x7779, 0x4079, 0x8cc7, 0xfe73, 0x2b6f, 0x6cee, 0x5203]), D2 = gf([0xf159, 0x26b2, 0x9b94, 0xebd6, 0xb156, 0x8283, 0x149a, 0x00e0, 0xd130, 0xeef3, 0x80f2, 0x198e, 0xfce7, 0x56df, 0xd9dc, 0x2406]), X = gf([0xd51a, 0x8f25, 0x2d60, 0xc956, 0xa7b2, 0x9525, 0xc760, 0x692c, 0xdc5c, 0xfdd6, 0xe231, 0xc0a4, 0x53fe, 0xcd6e, 0x36d3, 0x2169]), Y = gf([0x6658, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666]), I = gf([0xa0b0, 0x4a0e, 0x1b27, 0xc4ee, 0xe478, 0xad2f, 0x1806, 0x2f43, 0xd7a7, 0x3dfb, 0x0099, 0x2b4d, 0xdf0b, 0x4fc1, 0x2480, 0x2b83]);
+var gf0 = gf(),
+    gf1 = gf([1]),
+    _121665 = gf([0xdb41, 1]),
+    D = gf([0x78a3, 0x1359, 0x4dca, 0x75eb, 0xd8ab, 0x4141, 0x0a4d, 0x0070, 0xe898, 0x7779, 0x4079, 0x8cc7, 0xfe73, 0x2b6f, 0x6cee, 0x5203]),
+    D2 = gf([0xf159, 0x26b2, 0x9b94, 0xebd6, 0xb156, 0x8283, 0x149a, 0x00e0, 0xd130, 0xeef3, 0x80f2, 0x198e, 0xfce7, 0x56df, 0xd9dc, 0x2406]),
+    X = gf([0xd51a, 0x8f25, 0x2d60, 0xc956, 0xa7b2, 0x9525, 0xc760, 0x692c, 0xdc5c, 0xfdd6, 0xe231, 0xc0a4, 0x53fe, 0xcd6e, 0x36d3, 0x2169]),
+    Y = gf([0x6658, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666, 0x6666]),
+    I = gf([0xa0b0, 0x4a0e, 0x1b27, 0xc4ee, 0xe478, 0xad2f, 0x1806, 0x2f43, 0xd7a7, 0x3dfb, 0x0099, 0x2b4d, 0xdf0b, 0x4fc1, 0x2480, 0x2b83]);
+
 function ts64(x, i, h, l) {
     x[i] = (h >> 24) & 0xff;
     x[i + 1] = (h >> 16) & 0xff;
@@ -37,19 +45,23 @@ function ts64(x, i, h, l) {
     x[i + 6] = (l >> 8) & 0xff;
     x[i + 7] = l & 0xff;
 }
+
 function vn(x, xi, y, yi, n) {
     var i, d = 0;
     for (i = 0; i < n; i++)
         d |= x[xi + i] ^ y[yi + i];
     return (1 & ((d - 1) >>> 8)) - 1;
 }
+
 function crypto_verify_32(x, xi, y, yi) {
     return vn(x, xi, y, yi, 32);
 }
+
 function set25519(r, a) {
     for (var i = 0; i < 16; i++)
         r[i] = a[i] | 0;
 }
+
 function car25519(o) {
     var i, v, c = 1;
     for (i = 0; i < 16; i++) {
@@ -59,6 +71,7 @@ function car25519(o) {
     }
     o[0] += c - 1 + 37 * (c - 1);
 }
+
 function sel25519(p, q, b) {
     var t, c = ~(b - 1);
     for (var i = 0; i < 16; i++) {
@@ -67,9 +80,11 @@ function sel25519(p, q, b) {
         q[i] ^= t;
     }
 }
+
 function pack25519(o, n) {
     var i, j, b;
-    var m = gf(), t = gf();
+    var m = gf(),
+        t = gf();
     for (i = 0; i < 16; i++)
         t[i] = n[i];
     car25519(t);
@@ -91,32 +106,85 @@ function pack25519(o, n) {
         o[2 * i + 1] = t[i] >> 8;
     }
 }
+
 function neq25519(a, b) {
-    var c = new Uint8Array(32), d = new Uint8Array(32);
+    var c = new Uint8Array(32),
+        d = new Uint8Array(32);
     pack25519(c, a);
     pack25519(d, b);
     return crypto_verify_32(c, 0, d, 0);
 }
+
 function par25519(a) {
     var d = new Uint8Array(32);
     pack25519(d, a);
     return d[0] & 1;
 }
+
 function unpack25519(o, n) {
     for (var i = 0; i < 16; i++)
         o[i] = n[2 * i] + (n[2 * i + 1] << 8);
     o[15] &= 0x7fff;
 }
+
 function A(o, a, b) {
     for (var i = 0; i < 16; i++)
         o[i] = a[i] + b[i];
 }
+
 function Z(o, a, b) {
     for (var i = 0; i < 16; i++)
         o[i] = a[i] - b[i];
 }
+
 function M(o, a, b) {
-    var v, c, t0 = 0, t1 = 0, t2 = 0, t3 = 0, t4 = 0, t5 = 0, t6 = 0, t7 = 0, t8 = 0, t9 = 0, t10 = 0, t11 = 0, t12 = 0, t13 = 0, t14 = 0, t15 = 0, t16 = 0, t17 = 0, t18 = 0, t19 = 0, t20 = 0, t21 = 0, t22 = 0, t23 = 0, t24 = 0, t25 = 0, t26 = 0, t27 = 0, t28 = 0, t29 = 0, t30 = 0, b0 = b[0], b1 = b[1], b2 = b[2], b3 = b[3], b4 = b[4], b5 = b[5], b6 = b[6], b7 = b[7], b8 = b[8], b9 = b[9], b10 = b[10], b11 = b[11], b12 = b[12], b13 = b[13], b14 = b[14], b15 = b[15];
+    var v, c, t0 = 0,
+        t1 = 0,
+        t2 = 0,
+        t3 = 0,
+        t4 = 0,
+        t5 = 0,
+        t6 = 0,
+        t7 = 0,
+        t8 = 0,
+        t9 = 0,
+        t10 = 0,
+        t11 = 0,
+        t12 = 0,
+        t13 = 0,
+        t14 = 0,
+        t15 = 0,
+        t16 = 0,
+        t17 = 0,
+        t18 = 0,
+        t19 = 0,
+        t20 = 0,
+        t21 = 0,
+        t22 = 0,
+        t23 = 0,
+        t24 = 0,
+        t25 = 0,
+        t26 = 0,
+        t27 = 0,
+        t28 = 0,
+        t29 = 0,
+        t30 = 0,
+        b0 = b[0],
+        b1 = b[1],
+        b2 = b[2],
+        b3 = b[3],
+        b4 = b[4],
+        b5 = b[5],
+        b6 = b[6],
+        b7 = b[7],
+        b8 = b[8],
+        b9 = b[9],
+        b10 = b[10],
+        b11 = b[11],
+        b12 = b[12],
+        b13 = b[13],
+        b14 = b[14],
+        b15 = b[15];
     v = a[0];
     t0 += v * b0;
     t1 += v * b1;
@@ -524,9 +592,11 @@ function M(o, a, b) {
     o[14] = t14;
     o[15] = t15;
 }
+
 function S(o, a) {
     M(o, a, a);
 }
+
 function inv25519(o, i) {
     var c = gf();
     var a;
@@ -540,6 +610,7 @@ function inv25519(o, i) {
     for (a = 0; a < 16; a++)
         o[a] = c[a];
 }
+
 function pow2523(o, i) {
     var c = gf();
     var a;
@@ -553,11 +624,17 @@ function pow2523(o, i) {
     for (a = 0; a < 16; a++)
         o[a] = c[a];
 }
+
 function crypto_scalarmult(q, n, p) {
     var z = new Uint8Array(32);
     var x = new Float64Array(80);
     var r, i;
-    var a = gf(), b = gf(), c = gf(), d = gf(), e = gf(), f = gf();
+    var a = gf(),
+        b = gf(),
+        c = gf(),
+        d = gf(),
+        e = gf(),
+        f = gf();
     for (i = 0; i < 31; i++)
         z[i] = n[i];
     z[31] = (n[31] & 127) | 64;
@@ -606,6 +683,7 @@ function crypto_scalarmult(q, n, p) {
     pack25519(q, x16);
     return 0;
 }
+
 function crypto_scalarmult_base(q, n) {
     return crypto_scalarmult(q, n, _9);
 }
@@ -651,10 +729,27 @@ var K = [
     0x4cc5d4be, 0xcb3e42b6, 0x597f299c, 0xfc657e2a,
     0x5fcb6fab, 0x3ad6faec, 0x6c44198c, 0x4a475817
 ];
+
 function crypto_hashblocks_hl(hh, hl, m, n) {
-    var wh = new Int32Array(16), wl = new Int32Array(16);
+    var wh = new Int32Array(16),
+        wl = new Int32Array(16);
     var bh0, bh1, bh2, bh3, bh4, bh5, bh6, bh7, bl0, bl1, bl2, bl3, bl4, bl5, bl6, bl7, th, tl, i, j, h, l, a, b, c, d;
-    var ah0 = hh[0], ah1 = hh[1], ah2 = hh[2], ah3 = hh[3], ah4 = hh[4], ah5 = hh[5], ah6 = hh[6], ah7 = hh[7], al0 = hl[0], al1 = hl[1], al2 = hl[2], al3 = hl[3], al4 = hl[4], al5 = hl[5], al6 = hl[6], al7 = hl[7];
+    var ah0 = hh[0],
+        ah1 = hh[1],
+        ah2 = hh[2],
+        ah3 = hh[3],
+        ah4 = hh[4],
+        ah5 = hh[5],
+        ah6 = hh[6],
+        ah7 = hh[7],
+        al0 = hl[0],
+        al1 = hl[1],
+        al2 = hl[2],
+        al3 = hl[3],
+        al4 = hl[4],
+        al5 = hl[5],
+        al6 = hl[6],
+        al7 = hl[7];
     var pos = 0;
     while (n >= 128) {
         for (i = 0; i < 16; i++) {
@@ -962,6 +1057,7 @@ function crypto_hashblocks_hl(hh, hl, m, n) {
     }
     return n;
 }
+
 function crypto_hash(out, m, n) {
     var hh = new Int32Array(8);
     var hl = new Int32Array(8);
@@ -996,8 +1092,17 @@ function crypto_hash(out, m, n) {
         ts64(out, 8 * i, hh[i], hl[i]);
     return 0;
 }
+
 function add(p, q) {
-    var a = gf(), b = gf(), c = gf(), d = gf(), e = gf(), f = gf(), g = gf(), h = gf(), t = gf();
+    var a = gf(),
+        b = gf(),
+        c = gf(),
+        d = gf(),
+        e = gf(),
+        f = gf(),
+        g = gf(),
+        h = gf(),
+        t = gf();
     Z(a, p[1], p[0]);
     Z(t, q[1], q[0]);
     M(a, a, t);
@@ -1017,19 +1122,24 @@ function add(p, q) {
     M(p[2], g, f);
     M(p[3], e, h);
 }
+
 function cswap(p, q, b) {
     for (var i = 0; i < 4; i++) {
         sel25519(p[i], q[i], b);
     }
 }
+
 function pack(r, p) {
-    var tx = gf(), ty = gf(), zi = gf();
+    var tx = gf(),
+        ty = gf(),
+        zi = gf();
     inv25519(zi, p[2]);
     M(tx, p[0], zi);
     M(ty, p[1], zi);
     pack25519(r, ty);
     r[31] ^= par25519(tx) << 7;
 }
+
 function scalarmult(p, q, s) {
     var b, i;
     set25519(p[0], gf0);
@@ -1044,6 +1154,7 @@ function scalarmult(p, q, s) {
         cswap(p, q, b);
     }
 }
+
 function scalarbase(p, s) {
     var q = [gf(), gf(), gf(), gf()];
     set25519(q[0], X);
@@ -1053,6 +1164,7 @@ function scalarbase(p, s) {
     scalarmult(p, q, s);
 }
 var L = new Float64Array([0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x10]);
+
 function modL(r, x) {
     var carry, i, j, k;
     for (i = 63; i >= 32; --i) {
@@ -1078,6 +1190,7 @@ function modL(r, x) {
         r[i] = x[i] & 255;
     }
 }
+
 function reduce(r) {
     var x = new Float64Array(64);
     var i;
@@ -1089,7 +1202,9 @@ function reduce(r) {
 }
 // Like crypto_sign, but uses secret key directly in hash.
 function crypto_sign_direct(sm, m, n, sk) {
-    var d = new Uint8Array(64), h = new Uint8Array(64), r = new Uint8Array(64);
+    var d = new Uint8Array(64),
+        h = new Uint8Array(64),
+        r = new Uint8Array(64);
     var x = new Float64Array(64);
     var p = [gf(), gf(), gf(), gf()];
     var i, j;
@@ -1119,7 +1234,9 @@ function crypto_sign_direct(sm, m, n, sk) {
 }
 // Note: sm must be n+128.
 function crypto_sign_direct_rnd(sm, m, n, sk, rnd) {
-    var d = new Uint8Array(64), h = new Uint8Array(64), r = new Uint8Array(64);
+    var d = new Uint8Array(64),
+        h = new Uint8Array(64),
+        r = new Uint8Array(64);
     var x = new Float64Array(64);
     var p = [gf(), gf(), gf(), gf()];
     var i, j;
@@ -1159,6 +1276,7 @@ function crypto_sign_direct_rnd(sm, m, n, sk, rnd) {
     modL(sm.subarray(32, n + 64), x);
     return n + 64;
 }
+
 function curve25519_sign(sm, m, n, sk, opt_rnd) {
     // If opt_rnd is provided, sm must have n + 128,
     // otherwise it must have n + 64 bytes.
@@ -1178,16 +1296,22 @@ function curve25519_sign(sm, m, n, sk, opt_rnd) {
     var smlen;
     if (opt_rnd) {
         smlen = crypto_sign_direct_rnd(sm, m, n, edsk, opt_rnd);
-    }
-    else {
+    } else {
         smlen = crypto_sign_direct(sm, m, n, edsk);
     }
     // Copy sign bit from public key into signature.
     sm[63] |= signBit;
     return smlen;
 }
+
 function unpackneg(r, p) {
-    var t = gf(), chk = gf(), num = gf(), den = gf(), den2 = gf(), den4 = gf(), den6 = gf();
+    var t = gf(),
+        chk = gf(),
+        num = gf(),
+        den = gf(),
+        den2 = gf(),
+        den4 = gf(),
+        den6 = gf();
     set25519(r[2], gf1);
     unpack25519(r[1], p);
     S(num, r[1]);
@@ -1217,10 +1341,13 @@ function unpackneg(r, p) {
     M(r[3], r[0], r[1]);
     return 0;
 }
+
 function crypto_sign_open(m, sm, n, pk) {
     var i, mlen;
-    var t = new Uint8Array(32), h = new Uint8Array(64);
-    var p = [gf(), gf(), gf(), gf()], q = [gf(), gf(), gf(), gf()];
+    var t = new Uint8Array(32),
+        h = new Uint8Array(64);
+    var p = [gf(), gf(), gf(), gf()],
+        q = [gf(), gf(), gf(), gf()];
     mlen = -1;
     if (n < 64)
         return -1;
@@ -1250,7 +1377,10 @@ function crypto_sign_open(m, sm, n, pk) {
 // Converts Curve25519 public key back to Ed25519 public key.
 // edwardsY = (montgomeryX - 1) / (montgomeryX + 1)
 function convertPublicKey(pk) {
-    var z = new Uint8Array(32), x = gf(), a = gf(), b = gf();
+    var z = new Uint8Array(32),
+        x = gf(),
+        a = gf(),
+        b = gf();
     unpack25519(x, pk);
     A(a, x, gf1);
     Z(b, x, gf1);
@@ -1259,6 +1389,7 @@ function convertPublicKey(pk) {
     pack25519(z, a);
     return z;
 }
+
 function curve25519_sign_open(m, sm, n, pk) {
     // Convert Curve25519 public key into Ed25519 public key.
     var edpk = convertPublicKey(pk);
@@ -1281,7 +1412,7 @@ function checkArrayTypes() {
             throw new TypeError('unexpected type ' + t + ', use Uint8Array');
     }
 }
-axlsign.sharedKey = function (secretKey, publicKey) {
+axlsign.sharedKey = function(secretKey, publicKey) {
     checkArrayTypes(publicKey, secretKey);
     if (publicKey.length !== 32)
         throw new Error('wrong public key length');
@@ -1291,7 +1422,7 @@ axlsign.sharedKey = function (secretKey, publicKey) {
     crypto_scalarmult(sharedKey, secretKey, publicKey);
     return sharedKey;
 };
-axlsign.signMessage = function (secretKey, msg, opt_random) {
+axlsign.signMessage = function(secretKey, msg, opt_random) {
     checkArrayTypes(msg, secretKey);
     if (secretKey.length !== 32)
         throw new Error('wrong secret key length');
@@ -1302,14 +1433,13 @@ axlsign.signMessage = function (secretKey, msg, opt_random) {
         var buf = new Uint8Array(128 + msg.length);
         curve25519_sign(buf, msg, msg.length, secretKey, opt_random);
         return new Uint8Array(buf.subarray(0, 64 + msg.length));
-    }
-    else {
+    } else {
         var signedMsg = new Uint8Array(64 + msg.length);
         curve25519_sign(signedMsg, msg, msg.length, secretKey);
         return signedMsg;
     }
 };
-axlsign.openMessage = function (publicKey, signedMsg) {
+axlsign.openMessage = function(publicKey, signedMsg) {
     checkArrayTypes(signedMsg, publicKey);
     if (publicKey.length !== 32)
         throw new Error('wrong public key length');
@@ -1322,7 +1452,7 @@ axlsign.openMessage = function (publicKey, signedMsg) {
         m[i] = tmp[i];
     return m;
 };
-axlsign.sign = function (secretKey, msg, opt_random) {
+axlsign.sign = function(secretKey, msg, opt_random) {
     checkArrayTypes(secretKey, msg);
     if (secretKey.length !== 32)
         throw new Error('wrong secret key length');
@@ -1338,7 +1468,7 @@ axlsign.sign = function (secretKey, msg, opt_random) {
         signature[i] = buf[i];
     return signature;
 };
-axlsign.verify = function (publicKey, msg, signature) {
+axlsign.verify = function(publicKey, msg, signature) {
     checkArrayTypes(msg, signature, publicKey);
     if (signature.length !== 64)
         throw new Error('wrong signature length');
@@ -1353,7 +1483,7 @@ axlsign.verify = function (publicKey, msg, signature) {
         sm[i + 64] = msg[i];
     return (curve25519_sign_open(m, sm, sm.length, publicKey) >= 0);
 };
-axlsign.generateKeyPair = function (seed) {
+axlsign.generateKeyPair = function(seed) {
     checkArrayTypes(seed);
     if (seed.length !== 32)
         throw new Error('wrong seed length');
@@ -1373,5 +1503,12 @@ axlsign.generateKeyPair = function (seed) {
         private: sk
     };
 };
-exports.default=axlsign;
+axlsign.generateFromPrivateKey = function(pk, sk) {
+    crypto_scalarmult_base(pk, sk);
+    return {
+        public: pk,
+        private: sk
+    };
+};
+exports.default = axlsign;
 //# sourceMappingURL=axlsign.js.map
