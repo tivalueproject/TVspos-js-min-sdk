@@ -1,5 +1,5 @@
 import "babel-polyfill";
-const base58_1 = require("../libs/utils/base58");
+const base58_1 = require("base-58");
 const convert_1 = require("../libs/utils/convert");
 const Account = require('../libs/account');
 const Blockchain = require('../libs/blockchain');
@@ -25,7 +25,7 @@ acc.buildFromSeed(SEED, ACCOUNT_INDEX);
 
 var attachmentText = "Test Payment";
 var attachmentBytes = Uint8Array.from(convert_1.default.stringToByteArray(attachmentText));
-var attachmentBase58 = base58_1.default.encode(attachmentBytes);
+var attachmentBase58 = base58_1.encode(attachmentBytes);
 
 // Create Transaction Object (send 1 VSYS)
 var dataInfo = acc.buildPayment(RECIPIENT_ADDR, 1.0, attachmentBase58);

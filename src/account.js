@@ -5,8 +5,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 import "babel-polyfill";
 import BigNumber from 'bignumber.js'
 var crypto_1 = require("../libs/utils/crypto");
-var axlsign_1 = require("../libs/utils/axlsign");
-var base58_1 = require("../libs/utils/base58");
+var axlsign_1 = require("axlsign");
+var base58_1 = require("base-58");
 var tx_1 = require("../libs/utils/transaction");
 var concat_1 = require("../libs/utils/concat");
 var constants = require("../libs/constants");
@@ -34,18 +34,17 @@ module.exports = class Accout {
 
     buildFromSeed(seed, nonce) {
         var keyPair = crypto_1.default.buildKeyPair(seed, nonce);
-        this.privateKey = base58_1.default.encode(keyPair.privateKey);
-        this.publicKey = base58_1.default.encode(keyPair.publicKey);
+        this.privateKey = base58_1.encode(keyPair.privateKey);
+        this.publicKey = base58_1.encode(keyPair.publicKey);
         this.address = this.publicKeyToAddress(keyPair.publicKey);
     }
 
     buildFromPrivatekey(privateKey) {
-        var publicKeyBytes = new Uint8Array(32);
-        var privateKeyBytes = base58_1.default.decode(privateKey);
-        var keyPair = axlsign_1.default.generateFromPrivateKey(publicKeyBytes, privateKeyBytes)
-        this.privateKey = base58_1.default.encode(keyPair.private);
-        this.publicKey = base58_1.default.encode(keyPair.public);
-        this.address = this.publicKeyToAddress(keyPair.public);
+        var privateKeyBytes = base58_1.decode(privateKey);
+        var publicKeyBytes = axlsign_1.derivePublicKey(privateKeyBytes)
+        this.privateKey = base58_1.encode(privateKeyBytes);
+        this.publicKey = base58_1.encode(publicKeyBytes);
+        this.address = this.publicKeyToAddress(publicKeyBytes);
     }
 
     buildPayment(recipient, amount, base58Attachment, timestamp) {
@@ -100,7 +99,7 @@ module.exports = class Accout {
         if (!this.address || typeof this.address !== 'string') {
             throw new Error('Missing or invalid address');
         }
-        var addressBytes = base58_1.default.decode(this.address);
+        var addressBytes = base58_1.decode(this.address);
         if (addressBytes[0] !== constants.ADDRESS_VERSION || addressBytes[1] !== this.networkByte) {
             return false;
         }
@@ -122,7 +121,7 @@ module.exports = class Accout {
     publicKeyToAddress(publicKey) {
         var publicKeyBytes;
         if (typeof publicKey === 'string' || publicKey instanceof String) {
-            publicKeyBytes = base58_1.default.decode(publicKey);
+            publicKeyBytes = base58_1.decode(publicKey);
         } else {
             publicKeyBytes = publicKey;
         }
@@ -133,6 +132,6 @@ module.exports = class Accout {
         var publicKeyHashPart = Uint8Array.from(crypto_1.default.hash(publicKeyBytes).slice(0, 20));
         var rawAddress = concat_1.concatUint8Arrays(prefix, publicKeyHashPart);
         var addressHash = Uint8Array.from(crypto_1.default.hash(rawAddress).slice(0, 4));
-        return base58_1.default.encode(concat_1.concatUint8Arrays(rawAddress, addressHash));
+        return base58_1.encode(concat_1.concatUint8Arrays(rawAddress, addressHash));
     }
 };

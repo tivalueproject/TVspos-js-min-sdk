@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function() {
 })();
 //Object.defineProperty(exports, "__esModule", { value: true });
 var bignumber_1 = require("bignumber.js");
-var base58_1 = require("./base58");
+var base58_1 = require("base-58");
 var convert_1 = require("./convert");
 var concat_1 = require("./concat");
 // var constants = require("../constants");
@@ -35,7 +35,7 @@ export var Base58 = /** @class */ (function(_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Base58.prototype.process = function(value) {
-        var bytes = base58_1.default.decode(value);
+        var bytes = base58_1.decode(value);
         return bytes;
     };
     return Base58;
@@ -86,7 +86,7 @@ export var Attachment = /** @class */ (function(_super) {
     }
     Attachment.prototype.process = function(value) {
         if (typeof value === 'string') {
-            value = base58_1.default.decode(value);
+            value = base58_1.decode(value);
         }
         // if (value.length > constants.TRANSFER_ATTACHMENT_BYTE_LIMIT) {
         //     throw new Error('Maximum attachment length is exceeded');
@@ -103,7 +103,7 @@ export var Recipient = /** @class */ (function(_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Recipient.prototype.process = function(value) {
-        var addressBytes = base58_1.default.decode(value);
+        var addressBytes = base58_1.decode(value);
         return Uint8Array.from(addressBytes);
     };
     return Recipient;
