@@ -1,15 +1,15 @@
-import "babel-polyfill";
+// import "babel-polyfill";
 const Account = require('../libs/account');
 const Blockchain = require('../libs/blockchain');
 var constants = require("../libs/constants");
 
 /*======= Change the below before run ==========*/
-const SEED = "<please input your seed phrase>";
+const SEED = "123";
 const ACCOUNT_INDEX = 0;
-const LEASE_TX_ID = "EXzr6yozXB3oK9YcL7R3VLhwFenHVjixEiMHKL1ahRmo";//"<please input lease tx id>";
+const LEASE_TX_ID = "5dBzmDD1QC5j98Txpe6kF2agmDA5U5xZB2noLRTSTna1";//"<please input lease tx id>";
 /*================ Change end ==================*/
 
-const nodeAddress = "http://test.v.systems:9922";
+const nodeAddress = "https://testwallet.t.top/api/";
 const networkByte = constants.TESTNET_BYTE;
 
 async function sendCancelLeasingTx(chain, tx) {
