@@ -27,7 +27,7 @@ var attachmentText = "Test Payment";
 var attachmentBytes = Uint8Array.from(convert_1.default.stringToByteArray(attachmentText));
 var attachmentBase58 = base58_1.encode(attachmentBytes);
 
-// Create Transaction Object (send 1 VSYS)
+// Create Transaction Object (send 1 TV)
 var dataInfo = acc.buildPayment(RECIPIENT_ADDR, 1.0, attachmentBase58);
 dataInfo["signature"] = acc.getSignature(dataInfo, constants.PAYMENT_TX);
 console.log("Request:");

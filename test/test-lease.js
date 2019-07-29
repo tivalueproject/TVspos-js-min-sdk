@@ -21,7 +21,7 @@ async function sendLeasingTx(chain, tx) {
 const acc = new Account(networkByte);
 acc.buildFromSeed(SEED, ACCOUNT_INDEX);
 
-// Create Transaction Object (send 1 VSYS)
+// Create Transaction Object (send 1 TV)
 var dataInfo = acc.buildLeasing(RECIPIENT_ADDR, 1.0);
 dataInfo["signature"] = acc.getSignature(dataInfo, constants.LEASE_TX);
 console.log("Request:");

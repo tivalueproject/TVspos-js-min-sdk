@@ -11,6 +11,6 @@ export const PUBLIC_KEY_BYTE_LENGTH = 32;
 export const PUBLIC_KEY_LENGTH = 44;
 export const PRIVATE_KEY_LENGTH = 44;
 export const ADDRESS_LENGTH = 35;
-export const VSYS_PRECISION = 1e8;
+export const TV_PRECISION = 1e8;
 export const TX_FEE = 0.1;
 export const FEE_SCALE = 100;

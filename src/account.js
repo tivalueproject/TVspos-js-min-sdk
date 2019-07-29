@@ -10,12 +10,12 @@ var base58_1 = require("base-58");
 var tx_1 = require("../libs/utils/transaction");
 var concat_1 = require("../libs/utils/concat");
 var constants = require("../libs/constants");
-const { TX_FEE, VSYS_PRECISION, FEE_SCALE } = require("../libs/constants");
+const { TX_FEE, TV_PRECISION, FEE_SCALE } = require("../libs/constants");
 
 function convertAmountToMinimumUnit(amountStr) {
-    var amount = Number(amountStr) * VSYS_PRECISION;
+    var amount = Number(amountStr) * TV_PRECISION;
     if (amount > Number.MAX_SAFE_INTEGER) {
-        amount = BigNumber(amountStr).multipliedBy(VSYS_PRECISION).toFixed(0)
+        amount = BigNumber(amountStr).multipliedBy(TV_PRECISION).toFixed(0)
     }
     return amount;
 }
@@ -58,7 +58,7 @@ module.exports = class Accout {
             senderPublicKey: this.publicKey,
             recipient: recipient,
             amount: convertAmountToMinimumUnit(amount),
-            fee: TX_FEE * VSYS_PRECISION,
+            fee: TX_FEE * TV_PRECISION,
             feeScale: FEE_SCALE,
             timestamp: timestamp,
             attachment: base58Attachment
@@ -74,7 +74,7 @@ module.exports = class Accout {
             senderPublicKey: this.publicKey,
             recipient: recipient,
             amount: convertAmountToMinimumUnit(amount),
-            fee: TX_FEE * VSYS_PRECISION,
+            fee: TX_FEE * TV_PRECISION,
             feeScale: FEE_SCALE,
             timestamp: timestamp
         }
@@ -88,7 +88,7 @@ module.exports = class Accout {
         var dataInfo = {
             senderPublicKey: this.publicKey,
             txId: leaseTxId,
-            fee: TX_FEE * VSYS_PRECISION,
+            fee: TX_FEE * TV_PRECISION,
             feeScale: FEE_SCALE,
             timestamp: timestamp
         }
